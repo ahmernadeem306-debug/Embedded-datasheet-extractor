@@ -1,6 +1,7 @@
 import streamlit as st
 import re
 import nltk
+
 from collections import Counter
 from pdfminer.high_level import extract_text
 import pandas as pd
@@ -10,6 +11,7 @@ import plotly.express as px
 @st.cache_resource
 def load_nltk():
     nltk.download('punkt', quiet=True)
+    nltk.downnload('punkt_tab',quiet=True)
     nltk.download('stopwords', quiet=True)
     from nltk.corpus import stopwords
     return set(stopwords.words('english'))
