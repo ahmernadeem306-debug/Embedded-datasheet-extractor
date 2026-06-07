@@ -10,9 +10,22 @@ import plotly.express as px
 # 1. NLTK setup - cache kar de taake baar baar download na ho
 @st.cache_resource
 def load_nltk():
-    nltk.download('punkt', quiet=True)
-    nltk.downnload('punkt_tab',quiet=True)
-    nltk.download('stopwords', quiet=True)
+    import nltk
+    try:
+        nltk.data.find('tokenizers/punkt_tab')
+    except LookupError:
+        nltk.download('punkt_tab', quiet=True)
+    
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt', quiet=True)
+        
+    try:
+        nltk.data.find('corpora/stopwords')
+    except LookupError:
+        nltk.download('stopwords', quiet=True)
+        
     from nltk.corpus import stopwords
     return set(stopwords.words('english'))
 
@@ -146,11 +159,11 @@ if uploaded_file is not None:
     
     # Auto-detected component name
     if specs.get('Component Name'):
-        st.subheader(f"✅ Detected Component: {specs['Component Name']}")
+        st.subheader(f" Detected Component: {specs['Component Name']}")
         del specs['Component Name'] # Ab metrics mein mat dikhao
     
     # 3 Columns for specs
-    st.subheader("📌 Key Specifications Extracted")
+    st.subheader(" Key Specifications Extracted")
     if specs:
         cols = st.columns(3)
         for i, (key, value) in enumerate(specs.items()):
@@ -160,7 +173,7 @@ if uploaded_file is not None:
         st.warning("No standard specs found. Datasheet may use different format.")
 
     # Graph
-    st.subheader("📊 Top Technical Terms Frequency")
+    st.subheader(" Top Technical Terms Frequency")
     if not freq_df.empty:
         fig = px.bar(freq_df, x='Technical_Term', y='Frequency', 
                      title='Most Frequent Technical Terms in This Datasheet',
@@ -168,7 +181,7 @@ if uploaded_file is not None:
         st.plotly_chart(fig, use_container_width=True)
 
 else:
-    st.info("👆 Upload a datasheet to start. Try STM32F407.pdf or XC7A35T.pdf or LM741.pdf")
+    st.info(" Upload a datasheet to start. Try STM32F407.pdf or XC7A35T.pdf or LM741.pdf")
 
 st.markdown("---")
 st.markdown("**Built with:** Python, NLTK, pdfminer, Streamlit | **Supports:** MCU, FPGA, Analog IC | **By:** AHMER NADEEM")
