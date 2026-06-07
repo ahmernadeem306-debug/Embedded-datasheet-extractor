@@ -1,0 +1,5 @@
+streamlit
+pdfminer.six
+pandas
+plotly
+nltk
