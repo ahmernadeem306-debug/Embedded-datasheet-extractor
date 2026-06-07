@@ -2,4 +2,4 @@ streamlit
 pdfminer.six
 pandas
 plotly
-nltk
+nltk>=3.8.1
